@@ -1,0 +1,13 @@
+class UserModel {
+  String uid;
+  String email;
+  String name;
+  String? avatar;
+
+  UserModel({
+    required this.email,
+    required this.name,
+    required this.uid,
+    this.avatar,
+  });
+}
