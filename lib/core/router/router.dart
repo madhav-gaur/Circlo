@@ -1,4 +1,5 @@
 import 'package:circlo/core/router/routes.dart';
+import 'package:circlo/features/auth/screens/signin.dart';
 import 'package:circlo/features/auth/screens/signup.dart';
 import 'package:circlo/features/circles/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,12 +10,16 @@ final GoRouter appRouter = GoRouter(
     final user = FirebaseAuth.instance.currentUser;
 
     final isLoggedIn = user != null;
-    final isOnSignup = state.matchedLocation == AppRoutes.signup;
 
-    if (!isLoggedIn && !isOnSignup) {
+    final isAuthPage =
+        state.matchedLocation == AppRoutes.signup ||
+        state.matchedLocation == AppRoutes.signin;
+
+    if (!isLoggedIn && !isAuthPage) {
       return AppRoutes.signup;
     }
-    if (isLoggedIn && isOnSignup) {
+
+    if (isLoggedIn && isAuthPage) {
       return AppRoutes.dashboard;
     }
 
@@ -22,6 +27,7 @@ final GoRouter appRouter = GoRouter(
   },
   routes: [
     GoRoute(path: AppRoutes.signup, builder: (context, state) => Signup()),
+    GoRoute(path: AppRoutes.signin, builder: (context, state) => SignIn()),
     GoRoute(
       path: AppRoutes.dashboard,
       builder: (context, state) => Dashboard(),

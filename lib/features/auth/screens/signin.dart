@@ -10,49 +10,42 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
 
   @override
-  State<Signup> createState() => _SignupState();
+  State<SignIn> createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> {
+class _SignupState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
-  late TextEditingController _nameController;
+
   late TextEditingController _passwordController;
-  late TextEditingController _cPasswordController;
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _cPasswordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _cPasswordController.dispose();
     super.dispose();
   }
 
   String error = "";
   bool isLoading = false;
-  void _handleSignUp() async {
+  void _handleSignIn() async {
     try {
       if (!_formKey.currentState!.validate() || isLoading) return;
       setState(() {
         isLoading = true;
         error = "";
       });
-
-      final user = await AuthService().signup(
-        name: _nameController.text,
+      final user = await AuthService().signin(
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -60,27 +53,43 @@ class _SignupState extends State<Signup> {
       if (context.mounted) context.go(AppRoutes.dashboard);
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
-      String message;
       switch (e.code) {
-        case 'email-already-in-use':
-          message = "An account already exists with this email.";
+        case 'invalid-credential':
+        case 'wrong-password':
+          setState(() {
+            error = 'Incorrect email or password.';
+          });
           break;
 
-        case 'weak-password':
-          message = "Password is too weak.";
+        case 'user-not-found':
+          setState(() {
+            error = 'No account found with this email.';
+          });
           break;
 
         case 'invalid-email':
-          message = "Enter a valid email.";
+          setState(() {
+            error = 'Please enter a valid email address.';
+          });
+          break;
+
+        case 'user-disabled':
+          setState(() {
+            error = 'This account has been disabled.';
+          });
+          break;
+
+        case 'too-many-requests':
+          setState(() {
+            error = 'Too many attempts. Please try again later.';
+          });
           break;
 
         default:
-          message = "Something went Wrong";
-          break;
+          setState(() {
+            error = 'Something went wrong. Please try again.';
+          });
       }
-      setState(() {
-        error = message;
-      });
     } catch (e) {
       log(e.toString());
     } finally {
@@ -117,7 +126,7 @@ class _SignupState extends State<Signup> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    "Create Account",
+                    "Welcome Back",
                     style: AppFonts.screenTitle.copyWith(
                       color: AppColors.textPrimary,
                     ),
@@ -126,7 +135,7 @@ class _SignupState extends State<Signup> {
                   const SizedBox(height: 8.0),
 
                   Text(
-                    "Sign up to start sharing your live location securely.",
+                    "Sign in with Email and Password",
                     style: AppFonts.caption.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -139,21 +148,6 @@ class _SignupState extends State<Signup> {
                     child: Column(
                       children: [
                         AppTextField(
-                          controller: _nameController,
-                          label: "Name",
-                          prefixIcon: Icons.person,
-                          validator: (val) {
-                            if (val == null || val.isEmpty) {
-                              return "Provide Name";
-                            }
-                            if (val.length < 2) {
-                              return "Name should be at Least 3 Charcter Long";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 8),
-                        AppTextField(
                           controller: _emailController,
                           label: "Email",
                           prefixIcon: Icons.email,
@@ -164,7 +158,7 @@ class _SignupState extends State<Signup> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: 16),
                         AppTextField(
                           controller: _passwordController,
                           isPassword: true,
@@ -173,19 +167,6 @@ class _SignupState extends State<Signup> {
                           validator: (val) {
                             if (val!.length < 6) {
                               return "Password must be 6 character long";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 8),
-                        AppTextField(
-                          controller: _cPasswordController,
-                          isPassword: true,
-                          prefixIcon: Icons.password,
-                          label: "Confirm Password",
-                          validator: (val) {
-                            if (val != _passwordController.text) {
-                              return "Confirm Password doesn't match";
                             }
                             return null;
                           },
@@ -213,16 +194,17 @@ class _SignupState extends State<Signup> {
                   const SizedBox(height: 16.0),
 
                   PrimaryButton(
-                    label: "Sign Up",
-                    onPressed: () => _handleSignUp(),
+                    label: "Sign In",
+                    onPressed: () => _handleSignIn(),
                     isLoading: isLoading,
                   ),
+
                   SizedBox(height: 10),
                   InkWell(
                     splashColor: Colors.grey.shade100,
-                    onTap: () => context.go(AppRoutes.signin),
+                    onTap: () => context.go(AppRoutes.signup),
                     child: Text(
-                      "Already a user? Sign In",
+                      "New user? Sign Up",
                       style: AppFonts.caption.copyWith(
                         color: AppColors.primary,
                       ),
