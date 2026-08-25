@@ -10,4 +10,12 @@ class UserModel {
     required this.uid,
     this.avatar,
   });
+  factory UserModel.fromJSON(Map<String, dynamic> json) {
+    return UserModel(
+      email: json['email'],
+      name: json['name'],
+      uid: json['uid'],
+      avatar: json['uid'] ?? "",
+    );
+  }
 }
