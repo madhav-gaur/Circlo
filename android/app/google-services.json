@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "870939065953",
+    "project_id": "circlo-e37f2",
+    "storage_bucket": "circlo-e37f2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870939065953:android:312fd509e536e0d94ef420",
+        "android_client_info": {
+          "package_name": "com.example.circlo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa0Vi-dH7VqpRQvurkk67EQbGuUomqRa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
