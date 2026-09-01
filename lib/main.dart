@@ -1,4 +1,6 @@
 import 'package:circlo/core/router/router.dart';
+import 'package:circlo/core/themes/colors.dart';
+import 'package:circlo/core/themes/fonts.dart';
 import 'package:circlo/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,21 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         routerConfig: appRouter,
         title: "Circlo",
-        theme: ThemeData(),
+        theme: ThemeData(
+          appBarTheme: AppBarThemeData(
+            backgroundColor: AppColors.background,
+            // elevation: 2,
+            scrolledUnderElevation: 0,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: AppColors.lightGrey),
+            ),
+            centerTitle: true,
+            titleTextStyle: AppFonts.screenTitle.copyWith(
+              color: AppColors.primary,
+            ),
+          ),
+          scaffoldBackgroundColor: AppColors.background,
+        ),
       ),
     );
   }

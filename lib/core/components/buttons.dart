@@ -45,3 +45,47 @@ class PrimaryButton extends StatelessWidget {
     );
   }
 }
+
+class SecondaryButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onPressed;
+  final bool isLoading;
+
+  const SecondaryButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.isLoading = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 52.0,
+      child: OutlinedButton(
+        onPressed: isLoading ? null : onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: AppColors.background,
+          disabledBackgroundColor: AppColors.textDisabled,
+          shape: RoundedRectangleBorder(borderRadius: AppBorders.small),
+          side: BorderSide(color: AppColors.lightGrey),
+          elevation: 0,
+        ),
+        child: isLoading
+            ? SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(
+                  color: AppColors.textPrimary,
+                  strokeWidth: 2.5,
+                ),
+              )
+            : Text(
+                label,
+                style: AppFonts.button.copyWith(color: AppColors.textPrimary),
+              ),
+      ),
+    );
+  }
+}
