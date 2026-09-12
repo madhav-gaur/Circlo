@@ -5,8 +5,8 @@ import 'package:circlo/core/themes/colors.dart';
 import 'package:circlo/core/themes/fonts.dart';
 import 'package:circlo/core/themes/paddings.dart';
 import 'package:circlo/features/auth/screens/profile.dart';
-import 'package:circlo/features/circles/circles.dart';
-import 'package:circlo/features/circles/home.dart';
+import 'package:circlo/features/circles/screens/circles.dart';
+import 'package:circlo/features/circles/screens/home.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {

@@ -15,5 +15,12 @@ final currentUserProvider = FutureProvider<UserModel?>((ref) async {
   if (firebaseUser == null) return null;
 
   final repo = ref.read(userRepoProvider);
-  return repo.getCurrUser(firebaseUser.uid);
+  return repo.getCurrUser();
+});
+final userByIdProvider = FutureProvider.family<UserModel?, String>((
+  ref,
+  uid,
+) async {
+  final repo = ref.read(userRepoProvider);
+  return repo.getUserById(uid: uid);
 });

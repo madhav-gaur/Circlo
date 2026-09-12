@@ -93,7 +93,6 @@ class _SignupState extends State<SignIn> {
     } catch (e) {
       log(e.toString());
     } finally {
-      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
