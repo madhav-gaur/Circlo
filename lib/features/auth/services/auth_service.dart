@@ -14,10 +14,32 @@ class AuthService {
       password: password,
     );
 
-    await FirebaseFirestore.instance
+    final uid = user.user?.uid;
+    if (uid == null) return user;
+
+    final batch = FirebaseFirestore.instance.batch();
+    final userRef = FirebaseFirestore.instance
         .collection('users')
-        .doc(user.user?.uid)
-        .set({"uid": user.user!.uid, "name": name, "email": email});
+        .doc(uid);
+    final publicProfileRef = FirebaseFirestore.instance
+        .collection('publicProfiles')
+        .doc(uid);
+
+    batch.set(userRef, {
+      "uid": uid,
+      "name": name,
+      "email": email,
+      "avatar": null,
+      "circles": <String>[],
+    });
+
+    batch.set(publicProfileRef, {
+      "uid": uid,
+      "name": name,
+      "avatar": null,
+    });
+
+    await batch.commit();
     return user;
   }
 

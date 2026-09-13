@@ -57,7 +57,8 @@ class _SignupState extends State<Signup> {
         password: _passwordController.text,
       );
       log(user.toString());
-      if (context.mounted) context.go(AppRoutes.dashboard);
+      if (!mounted) return;
+      context.go(AppRoutes.dashboard);
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       String message;
@@ -83,11 +84,17 @@ class _SignupState extends State<Signup> {
       });
     } catch (e) {
       log(e.toString());
+      if (mounted) {
+        setState(() {
+          error = e.toString();
+        });
+      }
     } finally {
-      if (!mounted) return;
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 

@@ -50,7 +50,8 @@ class _SignupState extends State<SignIn> {
         password: _passwordController.text,
       );
       log(user.toString());
-      if (context.mounted) context.go(AppRoutes.dashboard);
+      if (!mounted) return;
+      context.go(AppRoutes.dashboard);
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       switch (e.code) {

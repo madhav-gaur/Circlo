@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CreateCircle extends StatefulWidget {
-  const new({super.key,});
+  const CreateCircle({super.key});
 
   @override
   State<CreateCircle> createState() => _CreateCircleState();
@@ -30,7 +30,6 @@ class _CreateCircleState extends State<CreateCircle> {
   @override
   void dispose() {
     _nameController.dispose();
-
     super.dispose();
   }
 
@@ -38,10 +37,7 @@ class _CreateCircleState extends State<CreateCircle> {
     if (!_formKey.currentState!.validate()) return;
 
     final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser == null) {
-      if (!mounted) return;
-      return;
-    }
+    if (currentUser == null) return;
 
     setState(() => isLoading = true);
     try {
@@ -50,8 +46,9 @@ class _CreateCircleState extends State<CreateCircle> {
         name: _nameController.text.trim(),
       );
 
-      if (context.mounted && circleId != null) {
-        context.go(AppRoutes.circleCreated.replaceFirst(':circleId', circleId));
+      if (!mounted) return;
+      if (circleId != null) {
+        context.push(AppRoutes.circleCreated.replaceFirst(':circleId', circleId));
       }
     } catch (e) {
       if (!mounted) return;
@@ -61,6 +58,7 @@ class _CreateCircleState extends State<CreateCircle> {
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

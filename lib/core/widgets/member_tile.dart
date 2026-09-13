@@ -1,13 +1,12 @@
 import 'package:circlo/core/themes/colors.dart';
 import 'package:circlo/core/themes/fonts.dart';
 import 'package:circlo/features/auth/providers/user_provider.dart';
-import 'package:circlo/features/circles/models/circle_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MemberTile extends ConsumerStatefulWidget {
   final String memberId;
-  const new({super.key, required this.memberId});
+  const MemberTile({super.key, required this.memberId});
 
   @override
   ConsumerState<MemberTile> createState() => MemberTileState();
@@ -16,10 +15,12 @@ class MemberTile extends ConsumerStatefulWidget {
 class MemberTileState extends ConsumerState<MemberTile> {
   @override
   Widget build(BuildContext context) {
-    final memberAsync = ref.watch(userByIdProvider(widget.memberId));
+    final memberAsync = ref.watch(publicProfileByIdProvider(widget.memberId));
     return memberAsync.when(
       data: (member) {
-        member = member!;
+        if (member == null) {
+          return const SizedBox.shrink();
+        }
         return ListTile(
           leading: CircleAvatar(
             backgroundColor: AppColors.secondary.withAlpha(30),
@@ -50,7 +51,12 @@ class MemberTileState extends ConsumerState<MemberTile> {
         );
       },
       error: (error, s) => Text(error.toString()),
-      loading: () => CircularProgressIndicator(),
+      loading: () => const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: CircularProgressIndicator(),
+        ),
+      ),
     );
   }
 }

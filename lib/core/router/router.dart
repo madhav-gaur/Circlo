@@ -4,6 +4,7 @@ import 'package:circlo/features/auth/screens/signup.dart';
 import 'package:circlo/features/circles/screens/circle_created.dart';
 import 'package:circlo/features/circles/screens/create_circle.dart';
 import 'package:circlo/features/circles/screens/dashboard.dart';
+import 'package:circlo/features/circles/screens/join_circle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 
@@ -41,10 +42,15 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.circleCreated,
       builder: (context, state) {
-            final circleId = state.pathParameters['circleId']!;
+        final circleId = state.pathParameters['circleId']!;
 
         return CircleCreated(circleId: circleId);
       },
+    ),
+
+    GoRoute(
+      path: AppRoutes.joinCircle,
+      builder: (context, state) => JoinCircle(),
     ),
   ],
 );

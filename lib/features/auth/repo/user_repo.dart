@@ -1,3 +1,4 @@
+import 'package:circlo/features/auth/models/public_profile_model.dart';
 import 'package:circlo/features/auth/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,31 +6,59 @@ import 'package:firebase_auth/firebase_auth.dart';
 class UserRepo {
   final firestore = FirebaseFirestore.instance;
 
-  Future<UserModel?> getCurrUser() async {
+  Stream<UserModel?> streamCurrUser() {
     final firebaseUser = FirebaseAuth.instance.currentUser;
-    if (firebaseUser == null) return null;
+    if (firebaseUser == null) return Stream.value(null);
 
-    final userSnapshot = await firestore
+    return firestore
         .collection('users')
         .doc(firebaseUser.uid)
-        .get();
-
-    if (!userSnapshot.exists) return null;
-
-    final data = userSnapshot.data();
-    if (data == null) return null;
-
-    return UserModel.fromJSON({...data, 'uid': firebaseUser.uid});
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists || snapshot.data() == null) return null;
+      return UserModel.fromJSON({...snapshot.data()!, 'uid': firebaseUser.uid});
+    });
   }
 
-  Future<UserModel?> getUserById({required String uid}) async {
-    final userSnapshot = await firestore.collection('users').doc(uid).get();
+  Stream<PublicProfileModel?> streamPublicProfileById({required String uid}) {
+    return firestore
+        .collection('publicProfiles')
+        .doc(uid)
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists || snapshot.data() == null) return null;
+      return PublicProfileModel.fromJSON({...snapshot.data()!, 'uid': uid});
+    });
+  }
 
-    if (!userSnapshot.exists) return null;
+  Stream<UserModel?> streamUserById({required String uid}) {
+    return firestore
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists || snapshot.data() == null) return null;
+      return UserModel.fromJSON({...snapshot.data()!, 'uid': uid});
+    });
+  }
 
-    final data = userSnapshot.data();
-    if (data == null) return null;
 
-    return UserModel.fromJSON(data);
+  Future<void> addCircleToUser({
+    required String uid,
+    required String circleId,
+  }) async {
+    await firestore.collection('users').doc(uid).set({
+      'circles': FieldValue.arrayUnion([circleId]),
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> removeCircleFromUser({
+    required String uid,
+    required String circleId,
+  }) async {
+    await firestore.collection('users').doc(uid).set({
+      'circles': FieldValue.arrayRemove([circleId]),
+    }, SetOptions(merge: true));
   }
 }
+

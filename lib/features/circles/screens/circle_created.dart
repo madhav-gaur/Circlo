@@ -1,4 +1,5 @@
 import 'package:circlo/core/components/buttons.dart';
+import 'package:circlo/core/router/routes.dart';
 import 'package:circlo/core/themes/borders.dart';
 import 'package:circlo/core/themes/colors.dart';
 import 'package:circlo/core/themes/fonts.dart';
@@ -8,11 +9,12 @@ import 'package:circlo/features/circles/providers/circle_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CircleCreated extends ConsumerWidget {
   final String circleId;
-  const new({super.key, required this.circleId});
+  const CircleCreated({super.key, required this.circleId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -162,7 +164,7 @@ class CircleCreated extends ConsumerWidget {
         child: PrimaryButton(
           label: "Go to Circle",
           onPressed: () {
-            // action
+            context.go(AppRoutes.dashboard);
           },
         ),
       ),
