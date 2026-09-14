@@ -5,4 +5,6 @@ class AppRoutes {
   static const createCircle = "/create-circle";
   static const circleCreated = "/circle-created/:circleId";
   static const joinCircle = "/join-circle";
+  static const circleDashboard = "/circle-dashboard/:circleId";
+
 }

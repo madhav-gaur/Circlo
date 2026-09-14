@@ -86,7 +86,7 @@ class HomeState extends ConsumerState<Home> {
                       circle: circle,
                       onTap: () {
                         context.push(
-                          AppRoutes.circleCreated.replaceFirst(
+                          AppRoutes.circleDashboard.replaceFirst(
                             ':circleId',
                             circle.circleId,
                           ),

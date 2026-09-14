@@ -53,7 +53,7 @@ class _CirclesState extends ConsumerState<Circles> {
                 circle: circle,
                 onTap: () {
                   context.push(
-                    AppRoutes.circleCreated.replaceFirst(
+                    AppRoutes.circleDashboard.replaceFirst(
                       ':circleId',
                       circle.circleId,
                     ),
@@ -68,4 +68,4 @@ class _CirclesState extends ConsumerState<Circles> {
       ),
     );
   }
-}
+}
