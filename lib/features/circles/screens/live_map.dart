@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class LiveMapScreen extends StatefulWidget {
-  const LiveMapScreen({super.key});
+class LiveMap extends StatefulWidget {
+  const LiveMap({super.key});
 
   @override
-  State<LiveMapScreen> createState() => _LiveMapScreenState();
+  State<LiveMap> createState() => _LiveMapScreenState();
 }
 
-class _LiveMapScreenState extends State<LiveMapScreen> {
+class _LiveMapScreenState extends State<LiveMap> {
   GoogleMapController? _mapController;
 
   static const LatLng _defaultLocation = LatLng(28.6139, 77.2090);

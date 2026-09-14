@@ -6,7 +6,7 @@ import 'package:circlo/features/circles/screens/circle_dashboard.dart';
 import 'package:circlo/features/circles/screens/create_circle.dart';
 import 'package:circlo/features/circles/screens/dashboard.dart';
 import 'package:circlo/features/circles/screens/join_circle.dart';
-import 'package:circlo/features/circles/screens/live_map_screen.dart';
+import 'package:circlo/features/circles/screens/live_map.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 
@@ -49,7 +49,7 @@ final GoRouter appRouter = GoRouter(
         return CircleCreated(circleId: circleId);
       },
     ),
-  
+
     GoRoute(
       path: AppRoutes.joinCircle,
       builder: (context, state) => JoinCircle(),
@@ -62,6 +62,6 @@ final GoRouter appRouter = GoRouter(
         return CircleDashboard(circleId: circleId);
       },
     ),
-    GoRoute(path: "/map-test", builder: (context, state) => LiveMapScreen()),
+    GoRoute(path: "/map-test", builder: (context, state) => LiveMap()),
   ],
 );

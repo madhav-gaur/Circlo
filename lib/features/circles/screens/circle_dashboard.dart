@@ -5,7 +5,7 @@ import 'package:circlo/core/themes/fonts.dart';
 import 'package:circlo/core/themes/paddings.dart';
 import 'package:circlo/core/widgets/member_tile.dart';
 import 'package:circlo/features/circles/providers/circle_provider.dart';
-import 'package:circlo/features/circles/screens/live_map_screen.dart';
+import 'package:circlo/features/circles/screens/live_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
