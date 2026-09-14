@@ -1,3 +1,4 @@
+import 'package:circlo/features/auth/models/public_profile_model.dart';
 import 'package:circlo/features/auth/models/user_model.dart';
 import 'package:circlo/features/auth/repo/user_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,11 +10,26 @@ final authStateProvider = StreamProvider<User?>(
   (ref) => FirebaseAuth.instance.authStateChanges(),
 );
 
-final currentUserProvider = FutureProvider<UserModel?>((ref) async {
-  final firebaseUser = await ref.watch(authStateProvider.future);
-
-  if (firebaseUser == null) return null;
-
-  final repo = ref.read(userRepoProvider);
-  return repo.getCurrUser(firebaseUser.uid);
+final currentUserProvider = StreamProvider<UserModel?>((ref) {
+  final authUser = ref.watch(authStateProvider).value;
+  if (authUser == null) {
+    return Stream.value(null);
+  }
+  final repo = ref.watch(userRepoProvider);
+  return repo.streamCurrUser();
 });
+
+final publicProfileByIdProvider =
+    StreamProvider.family<PublicProfileModel?, String>((ref,uid,) {
+  final repo = ref.watch(userRepoProvider);
+  return repo.streamPublicProfileById(uid: uid);
+});
+
+final userByIdProvider = StreamProvider.family<UserModel?, String>((
+  ref,
+  uid,
+) {
+  final repo = ref.watch(userRepoProvider);
+  return repo.streamUserById(uid: uid);
+});
+

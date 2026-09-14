@@ -1,5 +1,10 @@
-class AppRoutes{
+class AppRoutes {
   static const dashboard = "/";
   static const signup = "/signup";
   static const signin = "/signin";
+  static const createCircle = "/create-circle";
+  static const circleCreated = "/circle-created/:circleId";
+  static const joinCircle = "/join-circle";
+  static const circleDashboard = "/circle-dashboard/:circleId";
+
 }
